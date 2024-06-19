@@ -1,0 +1,62 @@
+logging:
+  level:
+    ROOT: INFO
+    org.hibernate.SQL: INFO
+    fr.codecake.whatsappclone: INFO
+
+spring:
+  application:
+    name: Whatsappclone Backend
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+          batch_size: 25
+        query:
+          fail_on_pagination_over_collection_fetch: true
+          in_clause_parameter_padding: true
+        generate_statistics: false
+        order_updates: true
+        connection:
+          provider_disables_autocommit: true
+        order_inserts: true
+        default_schema: whatsappclone
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: false
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+    default-schema: whatsappclone
+    contexts: dev
+  #    drop-first: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9080/realms/whatsapp-clone
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+
+server:
+  port: 8080
+

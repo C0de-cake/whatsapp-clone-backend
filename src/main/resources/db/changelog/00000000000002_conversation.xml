@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="00000000000002-conversation-seq" author="codecake">
+    <createSequence sequenceName="conversation_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000002-conversation" author="codecake">
+    <createTable tableName="conversation">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="public_id" type="${uuidType}">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="name" type="varchar(256)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_date" type="timestamp"/>
+      <column name="last_modified_date" type="timestamp"/>
+    </createTable>
+
+    <createTable tableName="user_conversation">
+      <column name="user_id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="conversation_id" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+
+    <addPrimaryKey columnNames="user_id, conversation_id" tableName="user_conversation"/>
+
+    <addForeignKeyConstraint baseColumnNames="conversation_id"
+                             baseTableName="user_conversation"
+                             constraintName="fk_conversation_user_id"
+                             referencedColumnNames="id"
+                             referencedTableName="conversation"/>
+
+    <addForeignKeyConstraint baseColumnNames="user_id"
+                             baseTableName="user_conversation"
+                             constraintName="fk_user_conversation_id"
+                             referencedColumnNames="id"
+                             referencedTableName="whatsapp_user"/>
+  </changeSet>
+</databaseChangeLog>

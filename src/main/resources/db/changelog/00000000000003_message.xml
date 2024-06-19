@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+
+  <changeSet id="00000000000003-message-binary-content-seq" author="codecake">
+    <createSequence sequenceName="message_binary_content_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000003-message-binary-content" author="codecake">
+    <createTable tableName="message_binary_content">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="file" type="${clobType}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="file_content_type" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_date" type="timestamp"/>
+      <column name="last_modified_date" type="timestamp"/>
+    </createTable>
+  </changeSet>
+
+
+  <changeSet id="00000000000003-message-seq" author="codecake">
+    <createSequence sequenceName="message_sequence" startValue="1" incrementBy="1"/>
+  </changeSet>
+
+  <changeSet id="00000000000003-message" author="codecake">
+    <createTable tableName="message">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="public_id" type="${uuidType}">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="send_time" type="${datetimeType}">
+        <constraints nullable="false"/>
+      </column>
+      <column name="send_state" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="text" type="varchar(1024)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="type" type="varchar(50)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="user_fk_sender" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="conversation_fk" type="bigint">
+        <constraints nullable="false"/>
+      </column>
+      <column name="message_binary_content_fk" type="bigint">
+        <constraints nullable="true"/>
+      </column>
+      <column name="created_date" type="timestamp"/>
+      <column name="last_modified_date" type="timestamp"/>
+    </createTable>
+    <addForeignKeyConstraint baseColumnNames="conversation_fk" baseTableName="message"
+                             constraintName="fk_message_conversation_id" deferrable="false"
+                             initiallyDeferred="false" referencedColumnNames="id" referencedTableName="conversation"
+                             validate="true"
+                             onDelete="CASCADE"/>
+    <addForeignKeyConstraint baseColumnNames="user_fk_sender" baseTableName="message"
+                             constraintName="fk_message_user_id" deferrable="false"
+                             initiallyDeferred="false" referencedColumnNames="id" referencedTableName="whatsapp_user"
+                             validate="true"
+                             onDelete="CASCADE"/>
+    <addForeignKeyConstraint baseColumnNames="message_binary_content_fk" baseTableName="message"
+                             constraintName="fk_message_content_id" deferrable="false"
+                             initiallyDeferred="false" referencedColumnNames="id" referencedTableName="message_binary_content"
+                             validate="true"
+                             onDelete="CASCADE"/>
+  </changeSet>
+
+</databaseChangeLog>

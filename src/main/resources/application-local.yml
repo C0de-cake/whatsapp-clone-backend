@@ -1,0 +1,12 @@
+logging:
+  level:
+    ROOT: INFO
+    org.hibernate.SQL: DEBUG
+    org.springframework.security: DEBUG
+    fr.codecake.whatsappclone: DEBUG
+spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
