@@ -39,7 +39,7 @@ public class AuthorityEntity {
         return authorities
                 .stream()
                 .map(authority ->
-                        AuthorityEntityBuilder.authorityEntity()
+                        fr.codecake.whatsappclone.infrastructure.secondary.entity.AuthorityEntityBuilder.authorityEntity()
                                 .name(authority.getName().name()).build()).collect(Collectors.toSet());
 
     }

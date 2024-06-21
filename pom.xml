@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>fr.codecake</groupId>
-	<artifactId>whats-clone-back</artifactId>
+	<artifactId>whatsapp-clone-back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>whats-clone-back</name>
 	<description>Whatsapp clone API</description>

@@ -20,6 +20,7 @@ public class CorsFilterConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", corsConfiguration);
         source.registerCorsConfiguration("/**", corsConfiguration);
+        source.registerCorsConfiguration("http://localhost:4200", corsConfiguration);
         return new CorsFilter(source);
     }
 }

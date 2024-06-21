@@ -7,9 +7,11 @@ import fr.codecake.whatsappclone.messaging.domain.message.vo.ConversationPublicI
 import fr.codecake.whatsappclone.messaging.domain.message.vo.MessageSendState;
 import fr.codecake.whatsappclone.messaging.domain.user.aggregate.User;
 import fr.codecake.whatsappclone.messaging.domain.user.vo.UserPublicId;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class SpringDataMessageRepository implements MessageRepository {
     @Override
     public Message save(Message message, User sender, Conversation conversation) {

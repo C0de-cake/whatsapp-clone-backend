@@ -8,10 +8,12 @@ import fr.codecake.whatsappclone.messaging.domain.user.aggregate.User;
 import fr.codecake.whatsappclone.messaging.domain.user.vo.UserPublicId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class SpringDataConversationRepository implements ConversationRepository {
 
     @Override

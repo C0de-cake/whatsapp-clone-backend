@@ -45,7 +45,7 @@ spring:
     change-log: classpath:db/changelog/master.xml
     default-schema: whatsappclone
     contexts: dev
-  #    drop-first: true
+#    drop-first: true
   security:
     oauth2:
       resourceserver:
