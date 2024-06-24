@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsersApplicationService {
@@ -41,4 +42,10 @@ public class UsersApplicationService {
     public List<User> search(Pageable pageable, String query) {
         return userReader.search(pageable, query).stream().toList();
     }
+
+    @Transactional(readOnly = true)
+    public Optional<User> getUserByEmail(UserEmail userEmail) {
+        return userReader.getByEmail(userEmail);
+    }
+
 }
