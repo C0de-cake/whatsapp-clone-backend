@@ -66,11 +66,17 @@ public class SpringDataUserRepository implements UserRepository {
 
     @Override
     public int updateLastSeenByPublicId(UserPublicId userPublicId, Instant lastSeen) {
-        return 0;
+        return jpaUserRepository.updateLastSeen(userPublicId.value(), lastSeen);
     }
 
     @Override
     public List<User> getRecipientByConversationIdExcludingReader(ConversationPublicId conversationPublicId, UserPublicId readerPublicId) {
         return List.of();
+    }
+
+    @Override
+    public Optional<User> getOneByPublicId(UserPublicId userPublicId) {
+        return jpaUserRepository.findOneByPublicId(userPublicId.value())
+                .map(UserEntity::toDomain);
     }
 }

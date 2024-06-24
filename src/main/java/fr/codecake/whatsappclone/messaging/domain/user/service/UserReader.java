@@ -30,4 +30,8 @@ public class UserReader {
     public Page<User> search(Pageable pageable, String query) {
         return userRepository.search(pageable, query);
     }
+
+    public Optional<User> getByPublicId(UserPublicId publicId) {
+        return userRepository.getOneByPublicId(publicId);
+    }
 }
