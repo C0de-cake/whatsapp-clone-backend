@@ -3,8 +3,13 @@ package fr.codecake.whatsappclone.messaging.domain.user.service;
 import fr.codecake.whatsappclone.messaging.domain.user.aggregate.User;
 import fr.codecake.whatsappclone.messaging.domain.user.repository.UserRepository;
 import fr.codecake.whatsappclone.messaging.domain.user.vo.UserEmail;
+import fr.codecake.whatsappclone.messaging.domain.user.vo.UserPublicId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class UserReader {
 
@@ -16,5 +21,13 @@ public class UserReader {
 
     public Optional<User> getByEmail(UserEmail email) {
         return userRepository.getOneByEmail(email);
+    }
+
+    public List<User> getUsersByPublicId(Set<UserPublicId> publicIds) {
+        return userRepository.getByPublicIds(publicIds);
+    }
+
+    public Page<User> search(Pageable pageable, String query) {
+        return userRepository.search(pageable, query);
     }
 }

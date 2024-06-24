@@ -1,4 +1,4 @@
-package fr.codecake.whatsappclone.infrastructure.primary;
+package fr.codecake.whatsappclone.infrastructure.primary.user;
 
 import fr.codecake.whatsappclone.messaging.domain.user.aggregate.Authority;
 import org.jilt.Builder;

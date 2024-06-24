@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 @Repository
 public class SpringDataUserRepository implements UserRepository {
@@ -49,13 +51,17 @@ public class SpringDataUserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> getByPublicIds(List<UserPublicId> userPublicIds) {
-        return List.of();
+    public List<User> getByPublicIds(Set<UserPublicId> userPublicIds) {
+        List<UUID> rawPublicIds = userPublicIds.stream().map(UserPublicId::value).toList();
+        return jpaUserRepository.findByPublicIdIn(rawPublicIds)
+                .stream()
+                .map(UserEntity::toDomain)
+                .toList();
     }
 
     @Override
     public Page<User> search(Pageable pageable, String query) {
-        return null;
+        return jpaUserRepository.search(pageable, query).map(UserEntity::toDomain);
     }
 
     @Override

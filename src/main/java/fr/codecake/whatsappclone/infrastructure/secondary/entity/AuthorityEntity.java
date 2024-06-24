@@ -51,6 +51,14 @@ public class AuthorityEntity {
                 .collect(Collectors.toSet());
     }
 
+    public @NotNull @Size(max = 50) String getName() {
+        return name;
+    }
+
+    public void setName(@NotNull @Size(max = 50) String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

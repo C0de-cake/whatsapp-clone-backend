@@ -129,6 +129,26 @@ public class ConversationEntity extends AbstractAuditingEntity<Long> {
         return users;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPublicId(UUID publicId) {
+        this.publicId = publicId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setMessages(Set<MessageEntity> messages) {
+        this.messages = messages;
+    }
+
+    public void setUsers(Set<UserEntity> users) {
+        this.users = users;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
