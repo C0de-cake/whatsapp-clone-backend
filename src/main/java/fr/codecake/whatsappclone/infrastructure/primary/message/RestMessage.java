@@ -1,8 +1,9 @@
 package fr.codecake.whatsappclone.infrastructure.primary.message;
 
 import fr.codecake.whatsappclone.messaging.domain.message.aggregate.Message;
-import fr.codecake.whatsappclone.messaging.domain.message.vo.MessageSendState;
-import fr.codecake.whatsappclone.messaging.domain.message.vo.MessageType;
+import fr.codecake.whatsappclone.messaging.domain.message.aggregate.MessageSendNew;
+import fr.codecake.whatsappclone.messaging.domain.message.aggregate.MessageSendNewBuilder;
+import fr.codecake.whatsappclone.messaging.domain.message.vo.*;
 import org.jilt.Builder;
 
 import java.time.Instant;
@@ -49,7 +50,7 @@ public class RestMessage {
                 .type(message.getContent().type())
                 .senderId(message.getSender().value());
 
-        if(message.getContent().type() != MessageType.TEXT) {
+        if (message.getContent().type() != MessageType.TEXT) {
             restMessageBuilder.mediaContent(message.getContent().media().file())
                     .mimeType(message.getContent().media().mimetype());
         }
@@ -59,5 +60,65 @@ public class RestMessage {
 
     public static List<RestMessage> from(Set<Message> messages) {
         return messages.stream().map(RestMessage::from).toList();
+    }
+
+    public static MessageSendNew toDomain(RestMessage restMessage) {
+        MessageContentBuilder messageContent = MessageContentBuilder.messageContent()
+                .type(restMessage.type)
+                .text(restMessage.textContent);
+
+        if (!restMessage.type.equals(MessageType.TEXT)) {
+            messageContent.media(new MessageMediaContent(restMessage.mediaContent,
+                    restMessage.mimeType));
+        }
+        return MessageSendNewBuilder.messageSendNew()
+                .messageContent(messageContent.build())
+                .conversationPublicId(new ConversationPublicId(restMessage.conversationId))
+                .build();
+    }
+
+    public boolean hasMedia() {
+        return !type.equals(MessageType.TEXT);
+    }
+
+    public void setMediaAttachment(byte[] file, String contentType) {
+        this.mediaContent = file;
+        this.mimeType = contentType;
+    }
+
+    public String getTextContent() {
+        return textContent;
+    }
+
+    public Instant getSendDate() {
+        return sendDate;
+    }
+
+    public MessageSendState getState() {
+        return state;
+    }
+
+    public UUID getPublicId() {
+        return publicId;
+    }
+
+    public UUID getConversationId() {
+        return conversationId;
+    }
+
+    public MessageType getType() {
+        return type;
+    }
+
+    public byte[] getMediaContent() {
+        return mediaContent;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public UUID getSenderId() {
+        return senderId;
     }
 }
