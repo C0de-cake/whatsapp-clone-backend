@@ -38,7 +38,7 @@ public class ConversationsResource {
                                             RestConversationToCreate restConversationToCreate) {
         ConversationToCreate newConversation = RestConversationToCreate.toDomain(restConversationToCreate);
         State<Conversation, String> conversationState = conversationsApplicationService.create(newConversation);
-        if(conversationState.getStatus().equals(StatusNotification.OK)) {
+        if (conversationState.getStatus().equals(StatusNotification.OK)) {
             RestConversation restConversations = RestConversation.from(conversationState.getValue());
             return ResponseEntity.ok(restConversations);
         } else {
@@ -62,12 +62,19 @@ public class ConversationsResource {
     ResponseEntity<RestConversation> getOneByPublicId(@RequestParam UUID conversationId) {
         Optional<RestConversation> restConversation = conversationsApplicationService.getOneByConversationId(new ConversationPublicId(conversationId))
                 .map(RestConversation::from);
-        if(restConversation.isPresent()) {
+        if (restConversation.isPresent()) {
             return ResponseEntity.ok(restConversation.get());
         } else {
             ProblemDetail problemDetail = ProblemDetail
                     .forStatusAndDetail(HttpStatus.BAD_REQUEST, "Not able to find this conversation");
             return ResponseEntity.of(problemDetail).build();
         }
+    }
+
+    @PostMapping("/mark-as-read")
+    ResponseEntity<Integer> markConversationAsRead(@RequestParam UUID conversationId) {
+        State<Integer, String> readUpdateState = conversationsApplicationService.markConversationAsRead(
+                new ConversationPublicId(conversationId));
+        return ResponseEntity.ok(readUpdateState.getValue());
     }
 }

@@ -38,6 +38,13 @@ public class SpringEventMessageChangeNotifier implements MessageChangeNotifier {
         return State.<Void, String>builder().forSuccess();
     }
 
+    @Override
+    public State<Void, String> view(ConversationViewedForNotification conversationViewedForNotification, List<UserPublicId> usersToNotify) {
+        MessageIdWithUsers messageIdWithUsers = new MessageIdWithUsers(conversationViewedForNotification, usersToNotify);
+        applicationEventPublisher.publishEvent(messageIdWithUsers);
+        return State.<Void, String>builder().forSuccess();
+    }
+
     @EventListener
     public void handleDeleteConversation(ConversationIdWithUsers conversationIdWithUsers) {
         notificationService.sendMessage(conversationIdWithUsers.conversationPublicId().value(),
@@ -48,5 +55,11 @@ public class SpringEventMessageChangeNotifier implements MessageChangeNotifier {
     public void handleNewMessage(MessageWithUsers messageWithUsers) {
         notificationService.sendMessage(RestMessage.from(messageWithUsers.message()),
                 messageWithUsers.userToNotify(), NotificationEventName.NEW_MESSAGE);
+    }
+
+    @EventListener
+    public void handleView(MessageIdWithUsers messageIdWithUsers) {
+        notificationService.sendMessage(messageIdWithUsers.conversationViewedForNotification(),
+                messageIdWithUsers.usersToNotify(), NotificationEventName.VIEWS_MESSAGES);
     }
 }

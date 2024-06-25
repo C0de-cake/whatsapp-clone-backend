@@ -1,5 +1,6 @@
 package fr.codecake.whatsappclone.messaging.domain.user.service;
 
+import fr.codecake.whatsappclone.messaging.domain.message.vo.ConversationPublicId;
 import fr.codecake.whatsappclone.messaging.domain.user.aggregate.User;
 import fr.codecake.whatsappclone.messaging.domain.user.repository.UserRepository;
 import fr.codecake.whatsappclone.messaging.domain.user.vo.UserEmail;
@@ -33,5 +34,9 @@ public class UserReader {
 
     public Optional<User> getByPublicId(UserPublicId publicId) {
         return userRepository.getOneByPublicId(publicId);
+    }
+
+    public List<User> findUsersToNotify(ConversationPublicId conversationPublicId, UserPublicId readerPublicId) {
+        return userRepository.getRecipientByConversationIdExcludingReader(conversationPublicId, readerPublicId);
     }
 }

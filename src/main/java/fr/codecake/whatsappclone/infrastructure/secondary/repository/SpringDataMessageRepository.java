@@ -42,11 +42,12 @@ public class SpringDataMessageRepository implements MessageRepository {
 
     @Override
     public int updateMessageSendState(ConversationPublicId conversationPublicId, UserPublicId userPublicId, MessageSendState state) {
-        return 0;
+        return jpaMessageRepository.updateMessageSendState(conversationPublicId.value(), userPublicId.value(), state);
     }
 
     @Override
     public List<Message> findMessageToUpdateSendState(ConversationPublicId conversationPublicId, UserPublicId userPublicId) {
-        return List.of();
+        return jpaMessageRepository.findMessageToUpdateSendState(conversationPublicId.value(), userPublicId.value())
+                .stream().map(MessageEntity::toDomain).toList();
     }
 }

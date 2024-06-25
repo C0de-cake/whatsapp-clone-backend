@@ -27,7 +27,7 @@ public class SpringDataUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        if(user.getDbId() != null) {
+        if (user.getDbId() != null) {
             Optional<UserEntity> userToUpdateOpt = jpaUserRepository.findById(user.getDbId());
             if (userToUpdateOpt.isPresent()) {
                 UserEntity userToUpdate = userToUpdateOpt.get();
@@ -71,7 +71,8 @@ public class SpringDataUserRepository implements UserRepository {
 
     @Override
     public List<User> getRecipientByConversationIdExcludingReader(ConversationPublicId conversationPublicId, UserPublicId readerPublicId) {
-        return List.of();
+        return jpaUserRepository.findByConversationsPublicIdAndPublicIdIsNot(conversationPublicId.value(), readerPublicId.value())
+                .stream().map(UserEntity::toDomain).toList();
     }
 
     @Override
